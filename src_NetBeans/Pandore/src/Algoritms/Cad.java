@@ -2964,5 +2964,9 @@ public class Cad {
         
         //int x = archivo.posLineLikeBetween("#PC_DATA#","#",25,44);
         //System.out.println("Pos:"+x);
+        
+        //System.out.println(time.AlgoritmsT.getTimeActual());
+        
+        //System.out.println(time.AlgoritmsT.calculeTime("00:01:00.000","-","00:02:00.000"));
     }
 }

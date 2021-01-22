@@ -7,6 +7,7 @@ package time;
 
 import Algoritms.Cad;
 import Algoritms.Nums;
+import java.time.LocalTime;
 import java.util.Calendar;
 
 /**
@@ -371,6 +372,108 @@ public class AlgoritmsT {
     //Terminar Proceso//
         return salida;
     }
+    
+    
+    
+    /**
+     * Descripcion: Obtener la hora actual en formato HH:MM:SS.mms
+     *
+     * @return	valores de retorno
+     */
+    public static String getTimeActual (){
+    //Variables Locales e Inicializacion//
+        boolean condiciones=true;
+	String motivo="Indeterminado";
+        String salida="";
+    //Comprobar Condiciones Iniciales//
+            
+	//Comenzar Proceso//
+        if(condiciones==true){
+            salida=java.time.LocalTime.now().toString();
+	}else{
+            System.out.println("ERROR en getTimeActual, motivo: "+motivo+", valor regresado: "+salida);
+	}
+    //Terminar Proceso//
+        return salida;
+    }
+    
+    
+    
+    /**
+     * Descripcion: Obtener la hora actual en formato HH:MM:SS.mms
+     *
+     * @param   timeA Primer valor de tiempo en formato HH:MM:SS.mms
+     * @param   operator Operadores valido +, -, *, /
+     * @param   timeB Segundo valor de timepo en formato HH:MM:SS.mms
+     * @return	valor en milisegunos
+     */
+    public static double calculeTime (String timeA, String operator, String timeB){
+    //Variables Locales e Inicializacion//
+        boolean condiciones=true;
+	String motivo="Indeterminado";
+        double  salida=0;
+    //Comprobar Condiciones Iniciales//
+    if(Cad.isNulloVacia(timeA)){
+        condiciones=false;
+        motivo="TimeA no es valido";
+    } 
+    if(Cad.isNulloVacia(timeB)){
+        condiciones=false;
+        motivo="TimeB no es valido";
+    }
+    if(Cad.numOfContains(operator,"+,-,*,/",",")!=1){
+        condiciones=false;
+        motivo="Operaod no valido, Operadores validos:+, -, *, /";
+    }
+	//Comenzar Proceso//
+        if(condiciones==true){
+            //Separar valores posicionalemnte
+            int milisA = Cad.aEntero(Cad.subCadDESPUESdeCad(timeA,"."), 0);
+            int segsA = Cad.aEntero(Cad.subCadCadACadB(timeA,":","."), 0);
+            int minsA = Cad.aEntero(Cad.subCadCadACadB(timeA,":",":"), 0);
+            int hrsA = Cad.aEntero(Cad.subCadANTESdeCad(timeA,":"), 0);
+            
+            int milisB = Cad.aEntero(Cad.subCadDESPUESdeCad(timeB,"."), 0);
+            int segsB = Cad.aEntero(Cad.subCadCadACadB(timeB,":","."), 0);
+            int minsB = Cad.aEntero(Cad.subCadCadACadB(timeB,":",":"), 0);
+            int hrsB = Cad.aEntero(Cad.subCadANTESdeCad(timeB,":"), 0);
+         
+            
+            //Calcular el total de milisegundos de A
+               double totalA = hrsA*60*60*1000;
+                      totalA = totalA+(minsA*60*1000);
+                      totalA = totalA+(segsA*1000);
+                      totalA = totalA+milisA;
+               
+               //Calcular el total de milisegundos de B
+               double totalB = hrsB*60*60*1000;
+                      totalB = totalB+(minsB*60*1000);
+                      totalB = totalB+(segsB*1000);
+                      totalB = totalB+milisB;
+            
+                      
+                      
+            //Hacer la operacion que corresponda
+            if(Cad.Equals(operator,"-",false)){
+                salida=totalA-totalB;
+            }
+            if(Cad.Equals(operator,"+",false)){
+                salida=totalA+totalB;
+            }
+            if(Cad.Equals(operator,"*",false)){
+                salida=totalA*totalB;
+            }
+            if(Cad.Equals(operator,"/",false)){
+                salida=totalA/totalB;
+            }
+	}else{
+            System.out.println("ERROR en calculeTime, motivo: "+motivo+", valor regresado: "+salida);
+	}
+    //Terminar Proceso//
+        return salida;
+    }
+    
+    
     
     
     
