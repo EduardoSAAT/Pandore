@@ -2967,6 +2967,6 @@ public class Cad {
         
         //System.out.println(time.AlgoritmsT.getTimeActual());
         
-        //System.out.println(time.AlgoritmsT.calculeTime("00:01:00.000","-","00:02:00.000"));
+        //System.out.println(time.AlgoritmsT.calculeTime("14:27:07.568","-","14:25:05.653"));
     }
 }

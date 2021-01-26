@@ -429,12 +429,12 @@ public class AlgoritmsT {
         if(condiciones==true){
             //Separar valores posicionalemnte
             int milisA = Cad.aEntero(Cad.subCadDESPUESdeCad(timeA,"."), 0);
-            int segsA = Cad.aEntero(Cad.subCadCadACadB(timeA,":","."), 0);
+            int segsA = Cad.aEntero(Cad.subCadPosACadB(timeA,6,"."), 0);
             int minsA = Cad.aEntero(Cad.subCadCadACadB(timeA,":",":"), 0);
             int hrsA = Cad.aEntero(Cad.subCadANTESdeCad(timeA,":"), 0);
             
             int milisB = Cad.aEntero(Cad.subCadDESPUESdeCad(timeB,"."), 0);
-            int segsB = Cad.aEntero(Cad.subCadCadACadB(timeB,":","."), 0);
+            int segsB = Cad.aEntero(Cad.subCadPosACadB(timeB,6,"."), 0);
             int minsB = Cad.aEntero(Cad.subCadCadACadB(timeB,":",":"), 0);
             int hrsB = Cad.aEntero(Cad.subCadANTESdeCad(timeB,":"), 0);
          
