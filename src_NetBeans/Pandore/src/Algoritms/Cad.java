@@ -2592,6 +2592,7 @@ public class Cad {
             if(ignoreCase){
                 cadOriginal=cadOriginal.toUpperCase();
                 cadParecida=cadParecida.toUpperCase();
+                puntoVariacion=puntoVariacion.toUpperCase();
             }
             
             //Eliminar puntos de variacion Repetidos de la Cadena Parecida EJM: ho$$la -> ho$la//
@@ -2753,7 +2754,7 @@ public class Cad {
     
     
     /**
-     * Descripcion: Comparar si una cadena se parece a multiples otras cadenas con puntos de variacion
+     * Descripcion: Comparar si una cadena se parece a ALGUNA otras multiples cadenas con puntos de variacion
      *      $ como marca de Tag
      *      # como marca de variacion
      *  Ejemplo: "Inversiones Compras", "$#Inversion#$#Compra#" = true
@@ -2765,7 +2766,7 @@ public class Cad {
      * @param   ignoreCase Ignorar Mayusculas de Minusculas
      * @return	valores de retorno
      */
-    public static boolean LikeByTags(String cadOriginal, String cadParecida, String puntoVariacion, String puntoTags, boolean ignoreCase){
+    public static boolean LikeByTags_SOFT(String cadOriginal, String cadParecida, String puntoVariacion, String puntoTags, boolean ignoreCase){
     //Variables Locales e Inicializacion//
         boolean condiciones=true;
 	String motivo="Indeterminado";
@@ -2786,12 +2787,55 @@ public class Cad {
                 }
             }
 	}else{
-            System.out.println("ERROR en aString, motivo: "+motivo+", valor regresado: "+salida);
+            System.out.println("ERROR en LikeByTags_SOFT, motivo: "+motivo+", valor regresado: "+salida);
 	}
     //Terminar Proceso//
         return salida;
     }
     
+    
+    
+    
+    /**
+     * Descripcion: Comparar si una cadena se parece a TODAS las otras multiples cadenas con puntos de variacion
+     *      $ como marca de Tag
+     *      # como marca de variacion
+     *  Ejemplo: "Inversiones Compras mundo", "$#Inversion#$#Compra#mundo#" = true
+     * Ejemplo: "Inversiones Compras", "$#Inversion#$#Compra#mundo#" = false
+     * 
+     * @param	cadOriginal Cadena a Comparar
+     * @param   cadParecida Cadena con puntos de variacion
+     * @param   puntoVariacion Caracter de variacion
+     * @param   puntoTags Marca para separar diferentes tags
+     * @param   ignoreCase Ignorar Mayusculas de Minusculas
+     * @return	valores de retorno
+     */
+    public static boolean LikeByTags_HARD(String cadOriginal, String cadParecida, String puntoVariacion, String puntoTags, boolean ignoreCase){
+    //Variables Locales e Inicializacion//
+        boolean condiciones=true;
+	String motivo="Indeterminado";
+        boolean salida=true;
+    //Comprobar Condiciones Iniciales//
+	//no hay condiciones Iniciales
+	//Comenzar Proceso//
+        if(condiciones==true){
+            //Primero dividir la cadena parecida en un vector con subcadenas de variacion//
+            String[] vCadVariantes = aVector(cadParecida,puntoTags);
+            
+            //Despues comparar cada subcadena con la cadena original//
+            for(int i=0; i<vCadVariantes.length; i++){
+                //Si en alguna da true entonces terminar proceso y mandar true
+                if(LikeA(cadOriginal,vCadVariantes[i],puntoVariacion,ignoreCase)==false){
+                    salida=false;
+                    i=vCadVariantes.length;
+                }
+            }
+	}else{
+            System.out.println("ERROR en LikeByTags_HARD, motivo: "+motivo+", valor regresado: "+salida);
+	}
+    //Terminar Proceso//
+        return salida;
+    }
     
     
     
@@ -2968,5 +3012,10 @@ public class Cad {
         //System.out.println(time.AlgoritmsT.getTimeActual());
         
         //System.out.println(time.AlgoritmsT.calculeTime("14:27:07.568","-","14:25:05.653"));
+        
+        //System.out.println(LikeByTags_HARD("Hola Mundo Loco", "$#Hola#$#Mundo#$# #", "#","$", false));
+        
+
+        //System.out.println(LikeA("Hola Mundo Hola", "HolamundoHola", "Hola", false));
     }
 }
