@@ -7,6 +7,7 @@ import DataStructure.TreeString;
 import Dinamic.MatrizLong;
 import Dinamic.VectorLong;
 import Dinamic.VectorString;
+import Graphic.BarGraphic;
 import Graphic.ErrorCatcher;
 import java.util.Scanner;
 import javax.swing.JFrame;
@@ -275,10 +276,10 @@ public class Cad {
             String temp = subCadCadAPosB(CadOriginal, CadA, CadOriginal.length());
             int posCadB = posOfContains(temp, CadB, false);
             
-            //Si estas dos cadenas existen, entonces elimar la subcadena entre ellas//
+            //Si estas dos cadenas existen, entonces eliminar la subcadena entre ellas//
             if((posCadA>=0)&&(posCadB>=0)){
                 String part1 = subCadANTESdeCad(CadOriginal, CadA)+CadA;
-                String part2 = CadB+subCadDESPUESdeCad(CadOriginal, CadB);
+                String part2 = CadB+subCadPosAPosB(CadOriginal,posCadB+posCadA+CadA.length()+1,CadOriginal.length());
                 salida=part1+part2;
             }
 	}else{
@@ -2927,7 +2928,7 @@ public class Cad {
 	//Comenzar Proceso//
         if(condiciones==true){
             int posCadA = Cad.posOfContains(CadOriginal, CadA, false);
-            salida=Cad.EliminarCadACadB(salida, CadA, CadB);
+            salida = Cad.EliminarCadACadB(salida, CadA, CadB);
             salida = Cad.InsertCad(salida, remplazo, posCadA+CadA.length());
 	}else{
             System.out.println("ERROR en remplazarSubcad_CadACadB, motivo: "+motivo+", valor regresado: "+salida);
@@ -3002,20 +3003,5 @@ public class Cad {
      */
     public static void main(String[] args) {
         
-        //System.out.println(LikeByTags("Inversiones Compras","MM#cospra#MM#inaver#","#","MM", true));
-        
-        //Text archivo = new Text("Config.txt");
-        
-        //int x = archivo.posLineLikeBetween("#PC_DATA#","#",25,44);
-        //System.out.println("Pos:"+x);
-        
-        //System.out.println(time.AlgoritmsT.getTimeActual());
-        
-        //System.out.println(time.AlgoritmsT.calculeTime("14:27:07.568","-","14:25:05.653"));
-        
-        //System.out.println(LikeByTags_HARD("Hola Mundo Loco", "$#Hola#$#Mundo#$# #", "#","$", false));
-        
-
-        //System.out.println(LikeA("Hola Mundo Hola", "HolamundoHola", "Hola", false));
     }
 }

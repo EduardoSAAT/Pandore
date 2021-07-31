@@ -207,7 +207,7 @@ public class Motor {
         if(condiciones==true){
             salida=((this.Cronometro.TimeTranscurrido/this.actualOperation)*(this.numOperations-this.actualOperation));
 	}else{
-            System.out.println("ERROR en calcularTimeRestante, motivo: "+motivo+", valor regresado: "+salida);
+            //System.out.println("ERROR en calcularTimeRestante, motivo: "+motivo+", valor regresado: "+salida);
 	}
     //Terminar Proceso//
         return salida;
@@ -238,7 +238,7 @@ public class Motor {
                 salida=this.actualOperation*porcentPorOperacion;
             }
 	}else{
-            System.out.println("ERROR en calculaPorcentajeAvance, motivo: "+motivo+", valor regresado: "+salida);
+            //System.out.println("ERROR en calculaPorcentajeAvance, motivo: "+motivo+", valor regresado: "+salida);
 	}
     //Terminar Proceso//
         return salida;

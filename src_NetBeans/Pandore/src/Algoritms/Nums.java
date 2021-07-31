@@ -249,6 +249,36 @@ public class Nums {
     }
     
     
+    
+    /**
+     * Descripcion: Calcular la relacion de porcentaje entre dos numeros cualquiera
+     *
+     * @param	totalElements Total de la relacion
+     * @param   numElements Numero de elementos tomados del total
+     * @return	-1 ERRROR o 0 a 100
+     */
+    public static int relaxPorcentaje (int totalElements, int numElements){
+    //Variables Locales e Inicializacion//
+        boolean condiciones=true;
+        int salida=-1;
+        String motivo="";
+    //Comprobar condiciones iniciales
+    if(totalElements==0){
+        condiciones=false;
+        motivo="numElements no puede ser 0  div entre 0 error";
+    }
+	//Comenzar Proceso//
+        if(condiciones==true){        
+           salida=(numElements*100)/totalElements; 
+	}else{
+            System.out.println("ERROR en aCadena, motivoo: "+motivo); 
+	}
+    //Terminar Proceso//
+        return salida;
+    }
+    
+    
+    
     /**
      * Descripcion: Convertir de double a Cad
      *

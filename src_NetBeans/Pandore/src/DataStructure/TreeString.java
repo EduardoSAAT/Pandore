@@ -9,6 +9,7 @@ import Algoritms.Cad;
 import Algoritms.Dimention;
 import Archivos.Text;
 import Dinamic.VectorString;
+import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,9 +22,9 @@ import javax.swing.tree.TreePath;
  *
  * @author Ing Lalux
  */
-public class TreeString {
+public class TreeString implements Serializable{
     //Raiz del Arbol
-        public Nodo raiz;
+        public Nodo raiz=null;
         public String IdArbol=null;
     
     
@@ -111,6 +112,92 @@ public class TreeString {
     //Terminar Proceso//
         return salida;
     }
+    
+    
+    
+    
+     /**
+     * Descripcion: Obtener el elemento padre de un hijo
+     *
+     * @param	rutaHijo  Ruta en formato "#H#H#H o Raiz ejm:  1H3H2H  o R para referirse al elemento de la raiz"
+     * @param   ERROR Valor de salida en caso de algun error
+     * @return	valor del Elemnto de ese nodo o ERROR o null si no tiene padre porque es raiz
+     */
+    public String getPadre (String rutaHijo, String ERROR){
+    //Variables Locales e Inicializacion//
+        boolean condiciones=true;
+	String motivo="Indeterminado";
+        String salida=ERROR;
+    //Comprobar Condiciones Iniciales//
+	//Comenzar Proceso//
+        if(condiciones==true){
+            //comprobar que exista la rutaHijo
+            if(Cad.isNulloVacia(rutaHijo)==false){
+                //comprobar si la ruta se refiere a la raiz o a algun hijo//
+                if(Cad.Equals(rutaHijo,"R",false)){
+                    //Entonces no tiene padre
+                    salida=null;
+                }else{
+                    //Si es el primer hijo, entonces se refiere a la raiz
+                    if(rutaHijo.length()-2 == 0){
+                        salida=getElement("R", ERROR);
+                    }else{
+                        //Entonces a la ruta del hijo eliminarle el ultimo indicador para llegar al padre
+                        String pathPadre=Cad.subCadPosAPosB(rutaHijo,0,rutaHijo.length()-2);
+                    
+                        salida = getElement(pathPadre,ERROR);
+                    }
+                }
+            }
+	}else{
+            System.out.println("ERROR en getPadre, motivo: "+motivo+", valor regresado: "+salida);
+	}
+    //Terminar Proceso//
+        return salida;
+    }
+    
+    
+    
+     /**
+     * Descripcion: Obtener la ruta del elemento padre de un hijo
+     *
+     * @param	rutaHijo  Ruta en formato "#H#H#H o Raiz ejm:  1H3H2H  o R para referirse al elemento de la raiz"
+     * @param   ERROR Valor de salida en caso de algun error
+     * @return	valor del Elemnto de ese nodo o ERROR o null si no tiene padre porque es raiz
+     */
+    public String getPadreRuta (String rutaHijo, String ERROR){
+    //Variables Locales e Inicializacion//
+        boolean condiciones=true;
+	String motivo="Indeterminado";
+        String salida=ERROR;
+    //Comprobar Condiciones Iniciales//
+	//Comenzar Proceso//
+        if(condiciones==true){
+            //comprobar que exista la rutaHijo
+            if(Cad.isNulloVacia(rutaHijo)==false){
+                //comprobar si la ruta se refiere a la raiz o a algun hijo//
+                if(Cad.Equals(rutaHijo,"R",false)){
+                    //Entonces no tiene padre
+                    salida=null;
+                }else{
+                    //Si es el primer hijo, entonces se refiere a la raiz
+                    if(rutaHijo.length()-2 == 0){
+                        salida="R";
+                    }else{
+                        //Entonces a la ruta del hijo eliminarle el ultimo indicador para llegar al padre
+                        String pathPadre=Cad.subCadPosAPosB(rutaHijo,0,rutaHijo.length()-2);
+                    
+                        salida = pathPadre;
+                    }
+                }
+            }
+	}else{
+            System.out.println("ERROR en getPadreRuta, motivo: "+motivo+", valor regresado: "+salida);
+	}
+    //Terminar Proceso//
+        return salida;
+    }
+    
     
     
      /**
@@ -224,6 +311,111 @@ public class TreeString {
     //Terminar Proceso//
         return salida;
     }
+    
+    
+    
+     /**
+     * Descripcion: Comprobar si un elemento es padre, o abuelo de otro nodo
+     *
+     * @param	node_OLD Element(No path)Nodo a ver si es un ancentro del nodo joven
+     * @param   node_Young Element(No path) Nodo joven posible hijo o nieto
+     * @return	True si es ancestro false si no lo es
+     */
+    public boolean isAncestro (String node_OLD, String node_Young){
+    //Variables Locales e Inicializacion//
+        boolean condiciones=true;
+	String motivo="Indeterminado";
+        boolean salida=false;
+    //Comprobar Condiciones Iniciales//
+    String pathOLD = getRuta(node_OLD);
+    if(Cad.isNulloVacia(pathOLD)){
+        condiciones=false;
+        motivo="No existe el Node old:"+node_OLD;
+    }
+    String pathYoung = getRuta(node_Young);
+    if(Cad.isNulloVacia(pathYoung)){
+        condiciones=false;
+        motivo="No existe el NodeYoung:"+node_Young;
+    }
+	//Comenzar Proceso//
+        if(condiciones==true){
+            //Comprobar condiciones conocidas
+            
+            //Si el path OLD es la raiz entonces es true siempre
+            if(Cad.Equals(pathOLD,"R",false)){
+                salida=true;
+            }else{
+                //Si es el mismo path del elemento entonces sacar false
+                if(Cad.Equals(pathYoung, pathOLD,false)){
+                    salida=false;
+                }else{
+                    //Comprobar el resto de casos genericos
+                    //Comprobar si la ruta del padre esta contenida en la del hijo
+                    String temp = Cad.subCadPosAPosB(pathYoung,0,pathOLD.length());
+
+                    if(Cad.Equals(temp,pathOLD,false)){
+                        salida=true;
+                    }
+                }
+            }
+	}else{
+            System.out.println("ERROR en isAncestro, motivo: "+motivo+", valor regresado: "+salida);
+	}
+    //Terminar Proceso//
+        return salida;
+    }
+    
+    
+    
+     /**
+     * Descripcion: Comprobar si un elemento es padre, o abuelo de otro nodo
+     *
+     * @param	pathOLD  path Nodo a ver si es un ancentro del nodo joven
+     * @param   pathYoung  path Nodo joven posible hijo o nieto
+     * @return	True si es ancestro false si no lo es
+     */
+    public boolean isAncestro_byPaths (String pathOLD, String pathYoung){
+    //Variables Locales e Inicializacion//
+        boolean condiciones=true;
+	String motivo="Indeterminado";
+        boolean salida=false;
+    //Comprobar Condiciones Iniciales//
+    if(nodoExist(pathOLD)==false){
+        condiciones=false;
+        motivo="No existe el Node old:"+pathOLD;
+    }
+    if(nodoExist(pathYoung)==false){
+        condiciones=false;
+        motivo="No existe el NodeYoung:"+pathYoung;
+    }
+	//Comenzar Proceso//
+        if(condiciones==true){
+            //Comprobar condiciones conocidas
+            
+            //Si el path OLD es la raiz entonces es true siempre
+            if(Cad.Equals(pathOLD,"R",false)){
+                salida=true;
+            }else{
+                //Si es el mismo path del elemento entonces sacar false
+                if(Cad.Equals(pathYoung, pathOLD,false)){
+                    salida=false;
+                }else{
+                    //Comprobar el resto de casos genericos
+                    //Comprobar si la ruta del padre esta contenida en la del hijo
+                    String temp = Cad.subCadPosAPosB(pathYoung,0,pathOLD.length());
+
+                    if(Cad.Equals(temp,pathOLD,false)){
+                        salida=true;
+                    }
+                }
+            }
+	}else{
+            System.out.println("ERROR en isAncestro_byPaths, motivo: "+motivo+", valor regresado: "+salida);
+	}
+    //Terminar Proceso//
+        return salida;
+    }
+    
     
     
     
@@ -595,6 +787,14 @@ public class TreeString {
         condiciones=false;
         motivo="Elemento null o vacio";
     }
+    if(Cad.isNulloVacia(caracterVariacion)){
+        condiciones=false;
+        motivo="charVaration null o vacio";
+    }
+    if(raiz==null){
+        condiciones=false;
+        motivo="Raiz de Arbol null";
+    }
 	//Comenzar Proceso//
         if(condiciones==true){
             if(Cad.LikeA(raiz.Element, Element, caracterVariacion)){
@@ -962,7 +1162,7 @@ public class TreeString {
     
     
     
-    VectorString vecString;
+    VectorString vecStringHojas;
     /**
      * Descripcion: Obtener todos los Nodos Hoja en un Vector de Strings
      *
@@ -978,21 +1178,20 @@ public class TreeString {
 	//Comenzar Proceso//
         if(condiciones==true){
             //Usar una variable global para todos
-                vecString = new VectorString(0);
+                vecStringHojas = new VectorString(0);
             
             //Llamar a la funcion Recursiva
                 addHojaVecString(raiz);
             
             //Terminar de usar la variable global
-                salida = vecString;
-                vecString = null;
+                salida = vecStringHojas;
+                vecStringHojas = null;
 	}else{
             System.out.println("ERROR en getHojasAll, motivo: "+motivo+", valor regresado: "+salida);
 	}
     //Terminar Proceso//
         return salida;
     }
-  
     
     
     /**
@@ -1017,7 +1216,7 @@ public class TreeString {
                     }
                 }else{
                     //Entonces es hoja y hay que mandarlo al VectorStrings
-                    vecString.addVauleRigth(nodo.Element);
+                    vecStringHojas.addVauleRigth(nodo.Element);
                 }
             }
         }else{
@@ -1030,6 +1229,86 @@ public class TreeString {
             System.out.println("Proceso addHojaVecString Terminado con FALLO");
     	}
     }
+    
+    
+    
+    
+    
+    
+    
+    VectorString vecStringRamas;
+    /**
+     * Descripcion: Obtener todos las ramas en un vector de string, ojo solo ramas no hojas
+     *
+     * @return	null o Vector con Elementos
+     */
+    public VectorString getRamasAll(){
+    //Variables Locales e Inicializacion//
+        boolean condiciones=true;
+	String motivo="Indeterminado";
+        VectorString salida=null;
+    //Comprobar Condiciones Iniciales//
+	//no hay condiciones Iniciales
+	//Comenzar Proceso//
+        if(condiciones==true){
+            //Usar una variable global para todos
+                vecStringRamas = new VectorString(0);
+            
+            //Llamar a la funcion Recursiva
+                addRamaVecString(raiz);
+            
+            //Terminar de usar la variable global
+                salida = vecStringRamas;
+                vecStringRamas = null;
+	}else{
+            System.out.println("ERROR en getRamasAll, motivo: "+motivo+", valor regresado: "+salida);
+	}
+    //Terminar Proceso//
+        return salida;
+    }
+    
+    /**
+     * Descripcion: Funcion recursiva de utileria para getRamasAll
+     *
+     * @param   nodo Nodo a trabajar
+     */
+    private void addRamaVecString(Nodo nodo){
+    //Variables Locales e Inicializacion//
+    boolean condiciones=true;
+    String motivo="Indeterminado";
+    //Comprobar Condiciones Iniciales//
+	//no hay condiciones Iniciales
+	//Comenzar Proceso//
+        if(condiciones==true){
+            if(Cad.isNulloVacia(nodo.Element)==false){
+                //Comprobar si este nodo Es una Hoja o Un padre//
+                if(nodo.numberSon()>0){
+                    //Entonces es padre y hay que llamar recursividad con sus hijos
+                    for(int i=1; i<=nodo.numberSon(); i++){
+                        addRamaVecString(nodo.getSon(i));
+                    }
+                    
+                    //Y ademas enviar este nodo a la coleccion
+                    vecStringRamas.addVauleRigth(nodo.Element);
+                }else{
+                    //Entonces es hoja y solo lo ignoramos
+                }
+            }
+        }else{
+            System.out.println("ERROR en addRamaVecString, motivo: "+motivo);
+	}
+    //Terminar Proceso//
+    	if(condiciones==true){
+            //System.out.println("Proceso addRamaVecString Terminado con EXITO");
+        }else{
+            System.out.println("Proceso addRamaVecString Terminado con FALLO");
+    	}
+    }
+    
+    
+    
+    
+    
     
     
      /**
@@ -1124,6 +1403,41 @@ public class TreeString {
             }  
 	}else{
             System.out.println("ERROR en getElementFromJTree, motivo: "+motivo+", valor regresado: "+salida);
+	}
+    //Terminar Proceso//
+        return salida;
+    }
+    
+    
+    
+    
+     /**
+     * Descripcion: Obtener un elemento Parecido  un Nodo de la clase de JTree por defecto de Java de manera Recursiva
+     *
+     * @param	Raiz Elemento Raiz del Arbol
+     * @param   Element Elemento Parecido a buscar recursivamente en el Arbol
+     * @param   varChar Caracter de variacion
+     * @return	Error null o Valor encontrado
+     */
+    public static TreePath getElementLikeFromJTree (DefaultMutableTreeNode Raiz, String Element, String varChar){
+    //Variables Locales e Inicializacion//
+        boolean condiciones=true;
+	String motivo="Indeterminado";
+        TreePath salida=null;
+    //Comprobar Condiciones Iniciales//
+	//no hay condiciones Iniciales
+	//Comenzar Proceso//
+        if(condiciones==true){
+            @SuppressWarnings("unchecked") Enumeration e = Raiz.depthFirstEnumeration(); 
+            while (e.hasMoreElements()) { 
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement(); 
+                
+                if (Cad.LikeA(node.toString(), Element, varChar)){ 
+                    return new TreePath(node.getPath()); 
+                }
+            }  
+	}else{
+            System.out.println("ERROR en getElementLikeFromJTree, motivo: "+motivo+", valor regresado: "+salida);
 	}
     //Terminar Proceso//
         return salida;
@@ -1414,6 +1728,42 @@ public class TreeString {
     	}
     }
     
+    
+    
+    
+    
+     /**
+     * Descripcion: Obtener todos los Hijos de un padre en un Vector de Strings
+     *
+     * @param   rutaPadre para obtener sus hijos
+     * @return  coleccion de hijos o null, si no tiene
+     */
+    public VectorString getHijos(String rutaPadre){
+    //Variables Locales e Inicializacion//
+        boolean condiciones=true;
+	String motivo="Indeterminado";
+        VectorString salida = null;
+    //Comprobar Condiciones Iniciales//
+    if(nodoExist(rutaPadre)==false){
+        condiciones=false;
+        motivo="Ruta: "+rutaPadre+" no existe";
+    }
+	//Comenzar Proceso//
+        if(condiciones==true){
+            //Obtener el nodo Padre
+            Nodo temp = getNodo(rutaPadre, false);
+            
+            salida = new VectorString(temp.numberSon());
+            //Para todos sus hijos agregarlos al vector de Strings
+            for(int i=1; i<=temp.numberSon(); i++){
+                salida.addVauleRigth(temp.getSon(i).Element);
+            }
+	}else{
+            System.out.println("ERROR en getHijos, motivo: "+motivo+", valor regresado: "+salida);
+	}
+    //Terminar Proceso//
+        return salida;
+    }
     
     
 }

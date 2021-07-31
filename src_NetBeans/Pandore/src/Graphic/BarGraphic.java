@@ -180,7 +180,7 @@ public class BarGraphic {
     *
     * @author Ing Lalux
     */
-    private class BarGraphicv1{
+    public class BarGraphicv1{
         int lineasAltura=0;
         int espacioBarToBar=2;
         int numBars=0;
@@ -247,7 +247,8 @@ public class BarGraphic {
 
             //Comenzar Proceso//
             if(condiciones==true){
-                magnitudLine=valMax/lineasAltura;
+                //magnitudLine=valMax/lineasAltura;
+                magnitudLine=(valMax-valMin)/lineasAltura;
 
                 valLinea[0]=valMax-magnitudLine;
                 for(int i=1; i<lineasAltura; i++){

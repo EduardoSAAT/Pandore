@@ -6,12 +6,13 @@
 package DataStructure;
 
 import Algoritms.Cad;
+import java.io.Serializable;
 
 /**
  *
  * @author Ing Lalux
  */
-public class Nodo {
+public class Nodo implements Serializable{
     public String Element;
     public Nodo[] Hijos;
     
